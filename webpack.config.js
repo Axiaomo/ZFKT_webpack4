@@ -3,7 +3,7 @@ let HtmlWebapckPlugin=require("html-webpack-plugin");
 module.exports={
   /* 开发服务器配置 */
   devServer:{
-    port:3000, //端口
+    // port:3000, //端口
     progress:true,//滚动条
     open:"true",//自动打开浏览器
     compress:true,//压缩
@@ -38,15 +38,26 @@ module.exports={
       hash:true//生成的版本带有哈希值
     })
   ],
-  modules:{ //模块
-results:[//规则 css-loader 解析@inport语法
-  //style-loader css插入到head标签中
-  // loader 的特点 单一
-  // loader 的用法，字符串只用一个loader
-  // 多个loader需要[]
-  // loader 的顺序 默认从右向左执行 从下往上执行
-  // loader 还可以写成对象形式
-  {test:/\.css$/,use:["style-loader","css-loader"]},
-]
+  module:{ //模块
+      rules:[//规则 css-loader 解析@inport语法
+        //style-loader css插入到head标签中
+        // loader 的特点 单一
+        // loader 的用法，字符串只用一个loader
+        // 多个loader需要[]
+        // loader 的顺序 默认从右向左执行 从下往上执行
+        // loader 还可以写成对象形式
+        {
+          test:/\.css$/,
+          use:[
+              {
+                loader:"style-loader",
+                options:{
+                  insertAt:"top"
+                },
+              },
+              
+            ,"css-loader"]
+        },
+      ]
   }
 }
