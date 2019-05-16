@@ -12,7 +12,7 @@ module.exports={
   /* 
     模式 默认两种 production 生产模式 development 开发模式
   */ 
-   mode:"production",
+   mode:"development",
   //入口
   entry:'./src/index.js',
   // 出口
@@ -29,8 +29,7 @@ module.exports={
   /* 数组 配置所有的webpack插件 */
   plugins:[
     new HtmlWebapckPlugin({
-      template:"./src/index.html",//模板文件
-      filename:"index.html",//打包生成的文件名
+      template:"./src/index.html",                                             filename:"index.html",//打包生成的文件名
       // 压缩
       minify:{
         removeAttributeQuotes:true,//移除双引
@@ -38,5 +37,16 @@ module.exports={
       },
       hash:true//生成的版本带有哈希值
     })
-  ]
+  ],
+  modules:{ //模块
+results:[//规则 css-loader 解析@inport语法
+  //style-loader css插入到head标签中
+  // loader 的特点 单一
+  // loader 的用法，字符串只用一个loader
+  // 多个loader需要[]
+  // loader 的顺序 默认从右向左执行 从下往上执行
+  // loader 还可以写成对象形式
+  {test:/\.css$/,use:["style-loader","css-loader"]},
+]
+  }
 }
