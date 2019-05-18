@@ -1,4 +1,8 @@
-@import "./a.css";
+/* @import "./a.css"; */
 body{
   background: red;
+  background: url("./logo.jpg")
+}
+img{
+  width: 90px;
 }

@@ -4,6 +4,7 @@ let HtmlWebapckPlugin = require("html-webpack-plugin");
 let MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 const TerserJSPlugin = require('terser-webpack-plugin');
+// const webpack=require("webpack");
 module.exports = {
   optimization: {
     // 优化项
@@ -36,7 +37,8 @@ module.exports = {
      path.resolve() 可以将相对路径解析为绝对路径
     __dirname 以当前目录下产生dist目录
     */
-    path: path.resolve(__dirname, "dist") //路径必须是一个绝对路径
+    path: path.resolve(__dirname, "dist") ,//路径必须是一个绝对路径
+    // publicPath:"http://localhost:8080",//所有的增加默认引用的路径
   },
   /* 数组 配置所有的webpack插件 */
   plugins: [
@@ -52,16 +54,61 @@ module.exports = {
     }),
      /* 抽离css */
     new MiniCssExtractPlugin({
-      filename:"main.css"
-    })
+      filename:"css/main.css"
+    }),
+    /* 每个模块中都引入jquery */
+    // new webpack.providePlugin({
+    //   jquery:"$"
+    // })
   ],
+  /* 外部引入，不需要打包 */
+  externals:{
+    jquery:"$"
+  },
   module: {
     //模块
-    rules: [
+    rules: [ //loader默认从右向左执行 从下到上执行
+      /* 匹配html图片 */
+      {
+        test:/\.html$/,
+        use:"html-withimg-loader"
+      },
+      /* 匹配图片 */
+      {
+        test:/\.(png|jpg|gif)$/,
+        // use:"file-loader"
+        use:{
+          loader:"url-loader",
+          options:{
+            limit:1,//大于多少,产出图片
+            outputPath:"/img/",//产生地址
+            publicPath:"http://localhost:8080", //只给图片增加
+          }
+        }
+      },
+      /* 
+      jquery暴露到全局
+      */
+    //  {
+    //    test:require.resolve("jquery"),
+    //    use:"expose-loader?$"
+    //  },
+      /* 
+      校验eslint
+      */
+    //  {
+    //    test:/\.js%/,
+    //    use:{
+    //      loader:"eslint-loader",
+    //      options:{
+    //       enforce:"pre"//强制在普通loader之前执行 post 之后执行
+    //      }
+    //    }
+    //  },
       /* 
       es6转es5
       */
-     {
+     { //normal 普通loader
        test:/\.js$/,
        use:{
          loader:"babel-loader",
@@ -76,10 +123,13 @@ module.exports = {
            */
            plugins:[
             ["@babel/plugin-proposal-decorators", { "legacy": true }],
-            ["@babel/plugin-proposal-class-properties", { "loose" : true }]
+            ["@babel/plugin-proposal-class-properties", { "loose" : true }],
+            ["@babel/plugin-transform-runtime"]
            ]
          }
-       }
+       },
+       include:path.resolve(__dirname,"src"), //js找哪个文件下的目录
+       exclude:/node_modules/ //排除哪个文件下的目录
      },
      /*  规则 css-loader 解析@inport语法
       style-loader css插入到head标签中
