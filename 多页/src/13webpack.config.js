@@ -2,9 +2,6 @@
 let path=require("path");
 // html插件
 const HtmlWebpackPlugin=require("html-webpack-plugin");
-const CleanWebpackPlugin=require("clean-webpack-plugin");
-const CopyWebpackPlugin=require("copy-webpack-plugin");
-const webpack=require("webpack");
 module.exports={
   // 多入口
   // mode:"development",
@@ -29,16 +26,7 @@ module.exports={
   },
   // 源码映射 会单独生成一个souremap 文件，出错了，会标识 当前报错的行和列
   // devtool:"source-map",//增加映射文件 可以帮我们调理源代码
-  // devtool:"eval-source-map",//不产生单独的文件，但是可以显示行和列
-  // devtool:"cheap-module-source-map",//不会产生列，但是是一个单独的映射文件
-  // devtool:"cheap-module-eval-source-map",//不会产生文件，也不会产生列
-  // 实时打包，监控
-  // watch: true,
-  // watchOptions:{ //监控选项
-  //     poll:1000, //每秒问我1000次，需要更新吗
-  //     aggregateTimeout:500, //防抖 我一直输入代码 输入停止 500毫秒内开始打包
-  //     ignored:/node_modules/ //不需要监控哪个文件夹
-  // },
+  devtool:"eval-source-map",//不产生单独的文件，但是可以显示行和列
   output:{
     // name 为变量
     filename:'[name].js',
@@ -55,15 +43,6 @@ module.exports={
       template:"./index.html",
       filename:"my.html",
       chunks:["my"]
-    }),
-    // 清除插件
-    new CleanWebpackPlugin(),
-    // 拷贝插件
-    new CopyWebpackPlugin([
-      {
-        "from":"doc",to:"./"
-      }]
-      ),
-      new webpack.BannerPlugin("make 2019 syq")
+    })
   ]
 }

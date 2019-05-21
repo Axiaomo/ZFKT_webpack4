@@ -3,3 +3,14 @@
 node_modules/
 dist/
 npm-debug.log
+
+[color]
+	diff = auto
+	status = auto
+	branch = auto
+	interactive = true
+	ui = true
+[alias]
+	hist = log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --
+[core]
+	autocrlf = false
