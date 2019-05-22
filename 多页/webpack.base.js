@@ -8,7 +8,7 @@ const webpack=require("webpack");
 module.exports={
   // 多入口
   // mode:"development",
-  mode:"production",
+  // mode:"production",
   entry:{
     index:"./src/index.js",
     my:"./src/my.js"
@@ -16,6 +16,10 @@ module.exports={
   // 规则
   module:{
     rules:[
+      {
+        test:/\.css$/, 
+        use: ["style-loader","css-loader"]
+      },
       {
         test:/\.js$/, //以js结尾
         use:{
@@ -44,8 +48,41 @@ module.exports={
     filename:'[name].js',
     path:path.resolve(__dirname,"dist")
   },
+  // 重写方式 请求代理到express服务器上 解决跨域问题
+  // devServer:{
+  //   /* 方法一 */
+  //   // proxy:{
+  //   //   "/api":"http://localhost:3000"
+  //   // }
+  //   // proxy:{
+  //   //   "/api":{
+  //   //     target:"http://localhost:3000",
+  //   //     pathRewrite:{"/api":""} //服务端不用写/api
+  //   //   }
+  //   // }
+  //   /* 方法二  钩子函数*/
+  //   before(app){
+  //     app.get("/user",(req,res)=>{
+  //         res.json({name:"珠峰=before"})
+  //     })
+  //   }
+  // },
+  /* 解析第三方包 */
+  // resolve:{
+  //   modules: [path.resolve("node_modules")],
+  //   // mainFiles:[] //入口文件名字 index.js
+  //   // mainFields:["style","main"] //按照文件名顺序查找
+  //   // 填写扩展名，先找js js找不到，再找css
+  //   extensions:[".js",".css",".json"]
+  //   // alias: {
+  //   //   bootstrap:"bootstrap/dist/css/bootstrap.css"
+  //   // }
+  // },
   // 配置插件
   plugins:[
+    // new webpack.DefinePlugin({
+    //   DEV:JSON.stringify("production")
+    // }),
     new HtmlWebpackPlugin({
       template:"./index.html",
       filename:"index.html",
