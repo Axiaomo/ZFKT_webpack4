@@ -29,6 +29,7 @@ module.exports = {
   //   other:"./src/other.js",
   // },
   devServer:{
+    hot:true,// 启用热更新
     port:3000,
     open:true,
     contentBase:"./dist"
@@ -80,6 +81,8 @@ module.exports = {
     new HtmlWebpackPlugin({
       template: "./public/index.html"
     }),
-    new webpack.IgnorePlugin(/\.\/locale/, /moment/)
+    new webpack.IgnorePlugin(/\.\/locale/, /moment/),
+    new webpack.NamedModulesPlugin(),//打印更新的模块路径
+    new webpack.HotModuleReplacementPlugin()//热更新插件
   ]
 }

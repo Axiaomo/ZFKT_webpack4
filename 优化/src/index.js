@@ -20,11 +20,21 @@ render( <h1> jsx </h1>,window.root) */
 // import "./a";
 // import "./b";
 // console.log("index.js")
-let button=document.createElement("button");
-button.innerHTML="hello";
-button.addEventListener("click",function(){
-  import("./26").then(data=>{
-    console.log(data.default)
+// let button=document.createElement("button");
+// button.innerHTML="hello";
+// button.addEventListener("click",function(){
+//   import("./26").then(data=>{
+//     console.log(data.default)
+//   })
+// });
+// document.body.appendChild(button)
+
+// 热更新
+import str from "./26";
+console.log(str);
+if(module.hot){ //支持热更新方法
+  module.hot.accept("./26.js",()=>{
+    let str=require("./26");
+    console.log(str);
   })
-});
-document.body.appendChild(button)
+}
